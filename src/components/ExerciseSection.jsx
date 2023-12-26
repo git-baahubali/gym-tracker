@@ -1,32 +1,41 @@
-import React, { useState } from 'react'
+// import { useState, useEffect } from 'react'
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import Keyboard from './Keyboard';
+import { KeyboardVisibility } from './Keyboard';
+import db from '../../db.js';
+import { signal } from '@preact/signals-react';
+import Set from './Set.jsx';
 
+export const sets = signal([])
 function ExerciseSection() {
+
+    async function addRest() {
+ 
+    }
     return (
-        <div className='border-2 bg-sky-900 rounded-xl m-0'>
-            <div className="flex justify-between items-center"><h1 className="px-4 py-1">Exercise Name</h1> <button className='px-4 py-1'>expand</button></div>
-            <Set />
+        <div className='w-[90vw] border-0 bg-sky-900 rounded-xl m-0 '>
+            <div className="flex justify-between items-center p-2">
+                <h1 className="px-4 py-1 text-center">Bicep Curl <span> - Left</span></h1>
+                <OpenInFullIcon />
+            </div>
+            {sets.value.map((set, index) => 
+            <Set editMode={false} key={index} setType={set.setTypeValue} weight={set.weightValue} units={set.weightUnits} reps={set.repsValue} RepType={set.repType} />)}
+            <Set editMode />
+            {/* <Rest duration={30}/> */}
+            <div className='flex justify-between text-center p-2'>
+                {/* <button className='button ' onClick={'addSet'} >Add Set</button > */}
+                <button className='button ' onClick={addRest}>Add Rest</button>
+            </div>
+            {KeyboardVisibility.value = false ? <Keyboard /> : <></>}
+
         </div>
     )
 }
-
 export default ExerciseSection
 
-function Set() {
-    const [setType, setSetType] = useState("Full Range")
-    return (
-        <div className='flex '>
-            <p>1</p>
-            <p>warm up / main set /  sub set / drop set</p>
 
-            <input type="text" />
-            <div className="suggestions"></div>
-            <select value={setType} onChange={(e) => setSetType(e.target.value)} className="p-1">
-                <option value="Full Range">FR</option>
-                <option value="Partial Range">PR</option>
-                <option value="Negatives">Negatives</option>
-                <option value="Holds">Holds</option>
-                {/* Add more options here if needed */}
-            </select>
-        </div>
-    )
+
+
+export function Rest(props) {
+    return <p>{props.duration}s Rest</p>
 }
