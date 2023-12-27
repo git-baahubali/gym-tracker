@@ -7,6 +7,7 @@ import { signal } from '@preact/signals-react';
 import Set from './Set.jsx';
 
 export const sets = signal([])
+
 function ExerciseSection() {
 
     async function addRest() {
@@ -26,7 +27,7 @@ function ExerciseSection() {
                 {/* <button className='button ' onClick={'addSet'} >Add Set</button > */}
                 <button className='button ' onClick={addRest}>Add Rest</button>
             </div>
-            {KeyboardVisibility.value = false ? <Keyboard /> : <></>}
+            {KeyboardVisibility.value = true ? <Keyboard /> : <></>}
 
         </div>
     )

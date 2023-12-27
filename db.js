@@ -4,12 +4,12 @@ import Dexie from "dexie";
 
 export const db = new Dexie("myDatabase");
 
-db.version(2).stores({
+db.version(3).stores({
 //   rest: "++id, time, date, time",
   sets: "++id, weight, weightType, reps, repType, duration, type, date, timeUnderTension, rest",
-  exerciseList: "++id, name, description, category",
+  exercises: "++id, name, description, category",
   exerciseSections: "++id, exerciseId, setIds",
-  routines: "++id, name"
+  routines: "++id, name,exerciseId"
 });
 
 export default db;
@@ -22,4 +22,9 @@ export async function addRoutine(Name) {
     } catch (error) {
         console.log(error);
     }
+}
+
+export async function updateRoutine([...exercises]){
+     //validation 
+    //  constraints
 }

@@ -27,12 +27,12 @@ function RoutinesPage() {
         <div className="p-2">
             <h1 className="text-2xl font-bold py-2">Routines</h1>
             <div className="grid grid-cols-2 gap-5">
-            {Routines.map((x, index) => <Link key={index} to={'/WorkoutPage'}> <RoutineCard name={x.name} id={x.id} /></Link>)}
+            {Routines.map((x, index) => <Link key={index} to={'/Routine/'+ x.id}> <RoutineCard name={x.name} id={x.id} /></Link>)}
             </div>
 
             <form onSubmit={handleSubmit} className="fixed bottom-5 ">
                 <input type="text" value={name} onChange={e => setName(e.target.value)} className="my-2  border-2 border-gray-600 p-2"/>
-                <button type="submit" className="my-2  border-2 border-gray-600 p-2">Create new Routine</button>
+                <button type="submit" className="my-2  border-2 border-gray-600 p-2">Add Routine</button>
             </form>
         </div>
     )
