@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import ExerciseSection from "../components/ExerciseSection";
 import db from "../../db";
+import Set from "../components/Set";
+import { Button } from "@/components/ui/button"
 
 function Routine() {
   console.log('render');
@@ -10,7 +12,7 @@ function Routine() {
 
   useEffect(() => {
     // fetch routine name & exercise list from routines table 
-    db.routines.where('id').equals('2').toArray().then(data=> {
+    db.routines.get(routineId).then(data=> {
       console.log(data);
       setExerciseList(data)})
     
@@ -21,7 +23,9 @@ function Routine() {
   return (
     <div>
 
-      <p>Routine - {exerciseList}</p>
+      <p>Routine - {routineId}</p>
+      <Button>Click me</Button>
+      {/* <Set/> */}
       {/* {exerciseList.map(x => <ExerciseSection editMode={false}/>)} */}
     </div>
   )
