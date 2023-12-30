@@ -10,9 +10,10 @@ function Routine() {
 
   useEffect(() => {
     // fetch routine name & exercise list from routines table 
-    db.routines.where('id').equals('2').toArray().then(data=> {
+    db.routines.get(parseInt(routineId)).then(data=> {
       console.log(data);
-      setExerciseList(data)})
+      // setExerciseList(data)
+    })
     
     //update the exerciseList
 
@@ -21,8 +22,13 @@ function Routine() {
   return (
     <div>
 
-      <p>Routine - {exerciseList}</p>
+      <p>Routine - {routineId}</p>
       {/* {exerciseList.map(x => <ExerciseSection editMode={false}/>)} */}
+
+      <form action="" onSubmit={(e) => { handleAddExercise(e) }}>
+                <input type="text" placeholder='add new exercise' />
+                <button className='px-2 mx-2' >add</button>
+            </form>
     </div>
   )
 }
