@@ -1,7 +1,7 @@
 
-import { NavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
 
-function Homepage() {
+function HomePage() {
     return (
         <>
      HomePage
@@ -11,4 +11,4 @@ function Homepage() {
     )
 }
 
-export default Homepage
+export default HomePage
