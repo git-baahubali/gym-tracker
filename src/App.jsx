@@ -1,7 +1,7 @@
 
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage'; 
 import WorkoutPage from './pages/WorkoutPage';
 import Keyboard from './components/Keyboard';
 import RoutinesPage from './pages/RoutinesPage';

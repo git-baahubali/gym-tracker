@@ -1,22 +1,44 @@
-function fibonacci(n) {
-    if (n <= 0) {
-      return [];
-    } else if (n === 1) {
-      return [0];
-    } else if (n === 2) {
-      return [0, 1];
-    } else {
-      const fibSeries = [0, 1];
-      for (let i = 2; i < n; i++) {
-        const nextFib = fibSeries[i - 1] + fibSeries[i - 2];
-        fibSeries.push(nextFib);
-      }
-      return fibSeries;
-    }
-  }
-  
-  // Print the first 10 Fibonacci numbers
-  const n = 1000;
-  const fibonacciSeries = fibonacci(n);
-  console.log(`First ${n} Fibonacci numbers: ${fibonacciSeries.join(', ')}`);
-  
+
+
+const data = ['12kg*12FR','10Kg*2PR']
+const weight =[]
+split(',')
+const resultedSet = []
+ => {
+  setTypeValue: 'main', 'dropset ', 'warmup', 'subset'
+     weightValue: 12,
+     weightUnits: 'Kg',
+     repsValue: 12,
+     repType: 'FR',
+
+}
+
+function paras(string,index){
+
+
+Logic (string ) =>  temp =  {setTypeValue: 'main',
+weightValue: 12,
+weightUnits: 'Kg',
+repsValue: 12,
+repType: 'FR',
+
+}
+
+if (resultedSet[index-1].weightValue > temp.weightValue)
+ temp.setTypeValue:'dropset'
+else{
+ temp.setTypeValue:'subset'
+
+}
+Logic
+
+}
+resultedSet.push({//})
+  return {}
+}
+
+
+
+paras('12kg*12FR')
+
+data.map((item, index) => paras(item,index))

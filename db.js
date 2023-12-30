@@ -28,3 +28,9 @@ export async function updateRoutine([...exercises]){
      //validation 
     //  constraints
 }
+
+
+export async function fetchAllExercises(){
+
+    
+}
