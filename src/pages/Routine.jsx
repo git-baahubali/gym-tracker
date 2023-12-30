@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import ExerciseSection from "../components/ExerciseSection";
 import db from "../../db";
+import Set from "../components/Set";
+import { Button } from "@/components/ui/button"
 
 function Routine() {
   console.log('render');
