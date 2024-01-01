@@ -3,34 +3,32 @@ import { useParams } from "react-router-dom"
 import ExerciseSection from "../components/ExerciseSection";
 import db from "../../db";
 import Set from "../components/Set";
-import { Button } from "@/components/ui/button"
+import { effect, signal } from "@preact/signals-react";
+import ExerciseSelectionDrawer from "@/components/ExerciseSelectionDrawer";
+
 
 function Routine() {
   console.log('render');
   const { routineId } = useParams();
-  const [exerciseList, setExerciseList] = useState([])
+  const [routine, setRoutine] = useState({ name: 'Loading...' })
 
   useEffect(() => {
     // fetch routine name & exercise list from routines table 
-    db.routines.get(parseInt(routineId)).then(data=> {
+    db.routines.get(parseInt(routineId)).then(data => {
       console.log(data);
-      // setExerciseList(data)
+      setRoutine(data)
     })
-    
-    //update the exerciseList
 
+    //update the exerciseList
 
   }, [])
   return (
     <div>
 
-      <p>Routine - {routineId}</p>
+      <p>{routine.name}</p>
       {/* {exerciseList.map(x => <ExerciseSection editMode={false}/>)} */}
+      <ExerciseSelectionDrawer />
 
-      <form action="" onSubmit={(e) => { handleAddExercise(e) }}>
-                <input type="text" placeholder='add new exercise' />
-                <button className='px-2 mx-2' >add</button>
-            </form>
     </div>
   )
 }
