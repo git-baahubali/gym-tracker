@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,53 +14,45 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+import { forwardRef } from "react";
+import { useParams } from "react-router-dom"
+import ChildComponent from "./ChildComponent";
+import db from "../../db";
 
-// var items = [
-//   {
-//     id: "recents",
-//     label: "Recents",
-//   },
-//   {
-//     id: "home",
-//     label: "Home",
-//   },
-//   {
-//     id: "applications",
-//     label: "Applications",
-//   },
-//   {
-//     id: "desktop",
-//     label: "Desktop",
-//   },
-//   {
-//     id: "downloads",
-//     label: "Downloads",
-//   },
-//   {
-//     id: "documents",
-//     label: "Documents",
-//   },
-// ];
-
+async function updateExercisesInRoutine(arrayOfExercises,routineId){
+  await db.routines.put({id:routineId, exerciseId:arrayOfExercises})
+}
 const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
+  items: z.array(z.number()).nonempty("You have to select at least one item."),
 });
 
-function CheckboxReactHookFormMultiple({filteredList}) {
- const items = filteredList
+// eslint-disable-next-line react/prop-types
+function CheckboxReactHookFormMultiple( {filteredList}) {
+  const { routineId } = useParams();
+console.log("for rendered");
+const ref = useRef('null')
+
+useEffect(()=>{
+  // console.log(ref);
+},[ref])
+
+  const items = filteredList;
   const form = useForm({
-    resolver: zodResolver(FormSchema),
+   resolver: zodResolver(FormSchema),
     defaultValues: {
       items: [
-        // "recents", "home"
+        19
       ],
     },
   });
 
+ 
   function onSubmit(data) {
-    console.log('Selected Exercise IDs:', data.items);
+    console.log('Selected Exercise IDs:', data.items);// not printing
+
+    // update Exercises In Routine
+    updateExercisesInRoutine(data.items,routineId)
+
 
     toast({
       title: "You submitted the following values:",
@@ -100,22 +93,23 @@ function CheckboxReactHookFormMultiple({filteredList}) {
                         className="flex flex-row items-start space-x-3 space-y-0"
                       >
                         <FormControl>
-                          <Checkbox
+                          <Checkbox 
                             checked={field.value?.includes(item.id)}
                             onCheckedChange={(checked) => {
                               return checked
                                 ? field.onChange([...field.value, item.id])
                                 : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== item.id
-                                    )
-                                  );
+                                  field.value?.filter(
+                                    (value) => value !== item.id
+                                  )
+                                );
                             }}
                           />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                         {item.name}
+                        <FormLabel className="font-normal" >
+                          {item.name}
                         </FormLabel>
+                            <ChildComponent ref={ref} name={item.id}/>
                       </FormItem>
                     );
                   }}
@@ -125,10 +119,12 @@ function CheckboxReactHookFormMultiple({filteredList}) {
             </FormItem>
           )}
         />
-        <Button type="submit" onClick={''}>Submit</Button>
+        <Button type="submit" >Submit</Button>
       </form>
     </Form>
   );
 }
 
 export default CheckboxReactHookFormMultiple;
+
+

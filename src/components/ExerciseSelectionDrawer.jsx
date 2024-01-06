@@ -1,3 +1,4 @@
+
 import { signal, effect, computed } from '@preact/signals-react'
 import {
     Drawer,
@@ -14,10 +15,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import CheckboxReactHookFormMultiple from "@/components/CheckboxReactHookFormMultiple";
 import db from '../../db.js';
+import ExerciseForm from './ExerciseForm.jsx';
 
 
 const searchQuery = signal('');
-// searcgQuery is also used for new exercise name populated underneath it 
+// searchQuery is also used for new exercise name populated underneath it 
 function handleSearch(e) {
     searchQuery.value = e.target.value;
 
@@ -26,6 +28,7 @@ export const AllExercisesFromdb = signal([{ id: 6, name: 'Bicep curl' }, { id: 7
 const filteredListOfExercises = computed(() => AllExercisesFromdb.value.filter((exercise) =>
     exercise.name.toLowerCase().includes(searchQuery.value.toLowerCase())
 ))
+//// console.log("filtered List : ",filteredListOfExercises.value);
 
 effect(() => {
     db.exercises.toArray().then(list => {
@@ -49,9 +52,11 @@ function ExerciseSelectionDrawer() {
                     {searchQuery.value ? <p>{'add \'' + searchQuery.value + '\' to routine'}</p> : ''}
                     <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
                         <CheckboxReactHookFormMultiple filteredList={filteredListOfExercises.value} />
+
+                        {/* <ExerciseForm filteredList={filteredListOfExercises} /> */}
                     </ScrollArea>
                     <DrawerFooter>
-                        <Button>Submit</Button>
+                        {/* <Button>Submit</Button> */}
                         <DrawerClose>
                             <Button variant="outline">Cancel</Button>
                         </DrawerClose>

@@ -8,7 +8,7 @@ import ExerciseSelectionDrawer from "@/components/ExerciseSelectionDrawer";
 
 
 function Routine() {
-  console.log('render');
+  console.log("Routine render");
   const { routineId } = useParams();
   const [routine, setRoutine] = useState({ name: 'Loading...' })
 

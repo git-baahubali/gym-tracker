@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { signal } from '@preact/signals-react'
 import db from '../../db';
+import  CheckboxReactHookFormMultiple  from '@/components/Xyz';
+
 
 export const allExercises = signal([]);
 function Exercisesdb() {
@@ -55,6 +57,8 @@ function Exercisesdb() {
 
             <p> <span className='font-bold'>Tip: </span>
                 comma seperated values like 'bicep,tricep,chest' will add 3 'bicep','tricep', 'chest'</p>
+
+
 
         </div>
     )
