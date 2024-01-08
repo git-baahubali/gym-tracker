@@ -8,7 +8,7 @@ import Set from './Set.jsx';
 
 export const sets = signal([])
 
-function ExerciseSection() {
+function ExerciseSection({name}) {
 
     async function addRest() {
  
@@ -16,7 +16,7 @@ function ExerciseSection() {
     return (
         <div className='w-[90vw] border-0 bg-sky-900 rounded-xl m-0 '>
             <div className="flex justify-between items-center p-2">
-                <h1 className="px-4 py-1 text-center">Bicep Curl <span> - Left</span></h1>
+            <h1 className="px-4 py-1 text-center">{name || "Bicep Curl" } <span> option</span></h1>
                 <OpenInFullIcon />
             </div>
             {sets.value.map((set, index) => 

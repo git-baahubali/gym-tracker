@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
-import { forwardRef } from "react";
 import { useParams } from "react-router-dom"
 import ChildComponent from "./ChildComponent";
 import db from "../../db";
@@ -27,7 +26,8 @@ const FormSchema = z.object({
 });
 
 // eslint-disable-next-line react/prop-types
-function CheckboxReactHookFormMultiple( {filteredList}) {
+function CheckboxReactHookFormMultiple( {filteredList,existingExercises}) {
+  ////console.log(existingExercises.map(x => x.id));
   const { routineId } = useParams();
 console.log("for rendered");
 const ref = useRef('null')
@@ -40,9 +40,7 @@ useEffect(()=>{
   const form = useForm({
    resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: [
-        19
-      ],
+      items: existingExercises.map(x => x.id),
     },
   });
 

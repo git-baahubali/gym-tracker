@@ -24,7 +24,7 @@ function handleSearch(e) {
     searchQuery.value = e.target.value;
 
 }
-export const AllExercisesFromdb = signal([{ id: 6, name: 'Bicep curl' }, { id: 7, name: 'Push Up' }])
+export const AllExercisesFromdb = signal([])
 const filteredListOfExercises = computed(() => AllExercisesFromdb.value.filter((exercise) =>
     exercise.name.toLowerCase().includes(searchQuery.value.toLowerCase())
 ))
@@ -34,10 +34,9 @@ effect(() => {
     db.exercises.toArray().then(list => {
         AllExercisesFromdb.value = [...list];
         console.log(AllExercisesFromdb.value);
-
     })
 })
-function ExerciseSelectionDrawer() {
+function ExerciseSelectionDrawer({existingExercises}) {
     return (
         <div>
             <Drawer>
@@ -51,7 +50,7 @@ function ExerciseSelectionDrawer() {
                     <input type="text" placeholder='Search' onChange={handleSearch} />
                     {searchQuery.value ? <p>{'add \'' + searchQuery.value + '\' to routine'}</p> : ''}
                     <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
-                        <CheckboxReactHookFormMultiple filteredList={filteredListOfExercises.value} />
+                        <CheckboxReactHookFormMultiple filteredList={filteredListOfExercises.value}  existingExercises={existingExercises} />
 
                         {/* <ExerciseForm filteredList={filteredListOfExercises} /> */}
                     </ScrollArea>

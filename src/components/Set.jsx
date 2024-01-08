@@ -110,7 +110,7 @@ export default function Set({ exerciseName, setType, weight, units, reps, RepTyp
 
 
         <p className='text-center'>
-          {`${setTypeValue} ${weightValue} ${weightUnitsValue} * ${repsValue} ${repType}`}
+          {`${setTypeValue} ${weightValue} ${weightUnits} * ${repsValue} ${repType}`}
         </p>
         <button onClick={() => { setEdit(true) }}> edit</button>
       </div>
