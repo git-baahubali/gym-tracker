@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { addRoutine } from "../../db";
 import db from "../../db";
+import History from "../components/History";
 
 function RoutinesPage() {
     const [Routines, setRoutines] = useState([{ name: 'Loading Routines' }])
@@ -29,6 +30,7 @@ function RoutinesPage() {
             <div className="grid grid-cols-2 gap-5">
             {Routines.map((x, index) => <Link key={index} to={'/Routine/'+ x.id}> <RoutineCard name={x.name} id={x.id} /></Link>)}
             </div>
+            <History/>
 
             <form onSubmit={handleSubmit} className="fixed bottom-5 ">
                 <input type="text" value={name} onChange={e => setName(e.target.value)} className="my-2  border-2 border-gray-600 p-2"/>
