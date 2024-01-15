@@ -27,7 +27,6 @@ const FormSchema = z.object({
 
 // eslint-disable-next-line react/prop-types
 function CheckboxReactHookFormMultiple( {filteredList,existingExercises}) {
-  ////console.log(existingExercises.map(x => x.id));
   const { routineId } = useParams();
 console.log("for rendered");
 const ref = useRef('null')

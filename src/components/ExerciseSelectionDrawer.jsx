@@ -16,6 +16,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import CheckboxReactHookFormMultiple from "@/components/CheckboxReactHookFormMultiple";
 import db from '../../db.js';
 import ExerciseForm from './ExerciseForm.jsx';
+import { useParams } from 'react-router-dom';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 
 const searchQuery = signal('');
@@ -37,6 +39,19 @@ effect(() => {
     })
 })
 function ExerciseSelectionDrawer({existingExercises}) {
+    const { routineId } = useParams();
+  const routineIdNumber = parseInt(routineId);
+
+    // Fetch all exercises
+    const allExercises = useLiveQuery(() => db.exercises.toArray(), []);
+    const routineExercises = useLiveQuery(() => 
+    db.routines.get(routineId).then(routine => routine?.exerciseId || []), 
+    [routineIdNumber]);
+
+  if (!allExercises || !routineExercises) {
+    return <div>Loading...</div>;
+  }
+
     return (
         <div>
             <Drawer>
@@ -50,7 +65,8 @@ function ExerciseSelectionDrawer({existingExercises}) {
                     <input type="text" placeholder='Search' onChange={handleSearch} />
                     {searchQuery.value ? <p>{'add \'' + searchQuery.value + '\' to routine'}</p> : ''}
                     <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
-                        <CheckboxReactHookFormMultiple filteredList={filteredListOfExercises.value}  existingExercises={existingExercises} />
+                        {/* <CheckboxReactHookFormMultiple filteredList={filteredListOfExercises.value}  existingExercises={existingExercises} /> */}
+                        <CheckboxReactHookFormMultiple filteredList={allExercises} existingExercises={existingExercises}  />
 
                         {/* <ExerciseForm filteredList={filteredListOfExercises} /> */}
                     </ScrollArea>

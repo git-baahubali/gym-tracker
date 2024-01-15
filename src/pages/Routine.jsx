@@ -1,47 +1,45 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import ExerciseSection from "../components/ExerciseSection";
 import db from "../../db";
-import Set from "../components/Set";
-import { effect, signal } from "@preact/signals-react";
 import ExerciseSelectionDrawer from "@/components/ExerciseSelectionDrawer";
-
+import { useLiveQuery } from "dexie-react-hooks";
+import { useState } from "react";
 
 function Routine() {
   console.log("Routine render");
+  const [name, setName] = useState(null)
+  // Extract the 'routineId' parameter from the URL using React Router.
   const { routineId } = useParams();
-  const [routine, setRoutine] = useState({ name: 'Loading...', id: "Loading", exercises: [] })
+  // Parse the 'routineId' as a number.
+  const routineIdNumber = parseInt(routineId);
 
-  useEffect(() => {
-    // fetch routine name  
-    db.routines.get(parseInt(routineId)).then(data => {
-      //  //console.log(data);
-      setRoutine(prev => { return { ...prev, ...data } })
-      //// setRoutine(data)
-    })
-    //fetch exercise list from routines table
-    db.routines.get(routineId).then(data => {
-      // //console.log(data)
-      db.exercises.where('id').anyOf(data.exerciseId).toArray().then(data => {
-        setRoutine(prev => { return { ...prev, exercises: data } })
-      })
-    })
+ db.routines.get(routineIdNumber).then( response => { setName(response.name) })
+  // Query the IndexedDB database to get details related to the routine.
+  const routine = useLiveQuery(() => 
+    db.routines.get(routineId), [routineIdNumber]);
+  
+   // Query the IndexedDB database to get exercises associated with the routine.
+  const exercises = useLiveQuery(() => 
+    routineIdNumber && routine?.exerciseId
+      ? db.exercises.where('id').anyOf(routine.exerciseId).toArray()
+      : [], [routineIdNumber, routine?.exerciseId]);
 
-  }, [])
   console.log("Routine :", routine);
+
   return (
-    <div >
+    <div>
+      {/* Display the routine name or 'Loading...' if not available. */}
+      <p>{name || 'Loading...'}</p>
 
-      <p>{routine.name}</p>
+      {/* Render an ExerciseSelectionDrawer component with existing exercises. */}
+      <ExerciseSelectionDrawer existingExercises={exercises || []} />
 
-      {/* {routine.exercises.map(x => <ExerciseSection editMode={false}/>)} */}
-      <ExerciseSelectionDrawer existingExercises = {routine.exercises} />
-    <div className="flex flex-col gap-2">
-    {routine.exercises.map((x,index)=> <ExerciseSection name={x.name} key={index} />)}
-
+      <div className="flex flex-col gap-2">
+        {/* Map and render ExerciseSection components for each exercise. */}
+        {exercises?.map((x, index) => <ExerciseSection name={x.name} key={index} />)}
+      </div>
     </div>
-    </div>
-  )
+  );
 }
 
-export default Routine
+export default Routine;
