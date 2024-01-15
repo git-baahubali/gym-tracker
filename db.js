@@ -4,11 +4,11 @@ import Dexie from "dexie";
 
 export const db = new Dexie("myDatabase");
 
-db.version(3).stores({
+db.version(5).stores({
 //   rest: "++id, time, date, time",
   sets: "++id, weight, weightType, reps, repType, duration, type, date, timeUnderTension, rest",
   exercises: "++id, name, description, category",
-  exerciseSections: "++id, exerciseId, setIds",
+  exerciseSections: "++id, exerciseId, exerciseName, date, setIds",
   routines: "++id, name,exerciseId"
 });
 

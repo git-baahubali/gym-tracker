@@ -30,15 +30,16 @@ function Routine() {
   }, [])
   console.log("Routine :", routine);
   return (
-    <div>
+    <div >
 
       <p>{routine.name}</p>
 
       {/* {routine.exercises.map(x => <ExerciseSection editMode={false}/>)} */}
       <ExerciseSelectionDrawer existingExercises = {routine.exercises} />
-      {routine.exercises.map((x,index)=> <ExerciseSection name={x.name} key={index} />)}
-      
+    <div className="flex flex-col gap-2">
+    {routine.exercises.map((x,index)=> <ExerciseSection name={x.name} key={index} />)}
 
+    </div>
     </div>
   )
 }

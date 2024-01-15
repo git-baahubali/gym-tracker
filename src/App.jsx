@@ -9,6 +9,7 @@ import Routine from './pages/Routine';
 import Exercisesdb from './pages/Exercisesdb';
 
 import { signal, computed, effect } from "@preact/signals-react";
+import PoseTest from './pages/PoseTest';
 
 const Number = signal(0)
 function App() {
@@ -20,10 +21,13 @@ function App() {
       <Routes>
         <Route path="/" element={<RoutinesPage />} />
         <Route path="/Routine/:routineId" element={<Routine />} />
+        <Route path="/History/:date" element={<Routine />} />
         <Route path="/WorkoutPage" element={<WorkoutPage />} />
         {/* <Route path="/HomePage" element={<HomePage />} /> */}
         <Route path="/Exercisesdb" element={<Exercisesdb /> } />
         <Route path="/Keyboard" element={<Keyboard />} />
+        <Route path="/Pose" element={<PoseTest />} />
+
       </Routes>
     </BrowserRouter>
     </>
