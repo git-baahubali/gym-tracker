@@ -128,80 +128,27 @@ function Routine() {
 
 	useEffect(() => {
 		// fetch routine name & exercise list from routines table
-		db.routines.get(routineId).then((data) => {
+		db.routines.get(parseInt(routineId)).then((data) => {
 			console.log(data);
-			setExerciseList(data);
+			// setExerciseList(data)
 		});
 
 		//update the exerciseList
 	}, []);
-
-	// Effect for search
-	useEffect(() => {
-		const filtered = excercises.filter((exercise) =>
-			exercise.toLowerCase().includes(searchQuery.toLowerCase())
-		);
-		setFilteredExcercises(filtered);
-	}, [excercises, searchQuery]);
-
-	const handleDrawer = () => {
-		isDrawerOpen ? setIsDrawerOpen(false) : setIsDrawerOpen(true);
-	};
 	return (
 		<div>
 			<p>Routine - {routineId}</p>
-			{/* <Set/> */}
-			<div className='w-full h-10 border'>Set box</div>
 			{/* {exerciseList.map(x => <ExerciseSection editMode={false}/>)} */}
-			<Drawer>
-				<DrawerTrigger size='sm' variant='default'>
-					<div className='p-2 rounded-lg text-white bg-slate-500'>
-						Add Exercise
-					</div>
-				</DrawerTrigger>
-				<DrawerContent>
-					<div className='flex justify-center'>
-						<DrawerHeader className='w-[50%] '>
-							{/* <DrawerTitle>Are you sure absolutely sure?</DrawerTitle> */}
-							<DrawerClose onClick={() => setSearchQuery("")}>X</DrawerClose>
-							<Input
-								placeholder='Search'
-								type='text'
-								name='search'
-								onChange={(e) => setSearchQuery(e.target.value)}
-							/>
-							{/* <DrawerDescription>This action cannot be undone.</DrawerDescription> */}
-							<ScrollArea className='h-72 rounded-md border'>
-								<div>
-									{filteredExercises.length === 0 ? (
-										<div>
-											<p>Add {`"${searchQuery}"`} excercise to your list ?</p>
-											<Button
-												onClick={() =>
-													setExcercises((allExercises) => [
-														...allExercises,
-														searchQuery,
-													])
-												}
-											>
-												+ Add
-											</Button>
-										</div>
-									) : (
-										filteredExercises.map((excercise) => (
-											<div key={excercise}>
-												<div>{excercise}</div>
-												<Separator />
-											</div>
-										))
-									)}
-								</div>
-							</ScrollArea>
-						</DrawerHeader>
-					</div>
-					<DrawerFooter>{/* <DrawerClose>cancel</DrawerClose> */}</DrawerFooter>
-				</DrawerContent>
-			</Drawer>
+
+			<form
+				action=''
+				onSubmit={(e) => {
+					handleAddExercise(e);
+				}}
+			>
+				<input type='text' placeholder='add new exercise' />
+				<button className='px-2 mx-2'>add</button>
+			</form>
 		</div>
 	);
 }
