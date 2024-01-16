@@ -9,7 +9,8 @@ db.version(5).stores({
   sets: "++id, weight, weightType, reps, repType, duration, type, date, timeUnderTension, rest",
   exercises: "++id, name, description, category",
   exerciseSections: "++id, exerciseId, exerciseName, date, setIds",
-  routines: "++id, name,exerciseId"
+  routines: "++id, name,exerciseId",
+//   days:"++id,"
 });
 
 export default db;

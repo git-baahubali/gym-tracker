@@ -7,7 +7,7 @@ import Keyboard from './components/Keyboard';
 import RoutinesPage from './pages/RoutinesPage';
 import Routine from './pages/Routine';
 import Exercisesdb from './pages/Exercisesdb';
-
+import Competition from './pages/Competition';
 import { signal, computed, effect } from "@preact/signals-react";
 import PoseTest from './pages/PoseTest';
 
@@ -27,6 +27,9 @@ function App() {
         <Route path="/Exercisesdb" element={<Exercisesdb /> } />
         <Route path="/Keyboard" element={<Keyboard />} />
         <Route path="/Pose" element={<PoseTest />} />
+        <Route path="/Competition" element={<Competition />} />
+
+        
 
       </Routes>
     </BrowserRouter>

@@ -19,13 +19,15 @@ import ExerciseForm from './ExerciseForm.jsx';
 import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 
-
+// Signal for handling the search query input.
 const searchQuery = signal('');
-// searchQuery is also used for new exercise name populated underneath it 
+// Function to update the search query signal based on user input.
 function handleSearch(e) {
     searchQuery.value = e.target.value;
-
 }
+
+// A reactive signal that automatically updates whenever `db.exercises` changes.
+// This is used to store all exercises fetched from the database.
 export const AllExercisesFromdb = signal([])
 const filteredListOfExercises = computed(() => AllExercisesFromdb.value.filter((exercise) =>
     exercise.name.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -38,19 +40,19 @@ effect(() => {
         console.log(AllExercisesFromdb.value);
     })
 })
-function ExerciseSelectionDrawer({existingExercises}) {
+function ExerciseSelectionDrawer({ existingExercises }) {
     const { routineId } = useParams();
-  const routineIdNumber = parseInt(routineId);
+    const routineIdNumber = parseInt(routineId);
 
     // Fetch all exercises
     const allExercises = useLiveQuery(() => db.exercises.toArray(), []);
-    const routineExercises = useLiveQuery(() => 
-    db.routines.get(routineId).then(routine => routine?.exerciseId || []), 
-    [routineIdNumber]);
+    const routineExercises = useLiveQuery(() =>
+        db.routines.get(routineId).then(routine => routine?.exerciseId || []),
+        [routineIdNumber]);
 
-  if (!allExercises || !routineExercises) {
-    return <div>Loading...</div>;
-  }
+    if (!allExercises || !routineExercises) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
@@ -66,9 +68,10 @@ function ExerciseSelectionDrawer({existingExercises}) {
                     {searchQuery.value ? <p>{'add \'' + searchQuery.value + '\' to routine'}</p> : ''}
                     <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
                         {/* <CheckboxReactHookFormMultiple filteredList={filteredListOfExercises.value}  existingExercises={existingExercises} /> */}
-                        <CheckboxReactHookFormMultiple filteredList={allExercises} existingExercises={existingExercises}  />
-
-                        {/* <ExerciseForm filteredList={filteredListOfExercises} /> */}
+                        {/*//! CheckboxReactHookFormMultiple component for selecting exercises. Filtered list of exercises and existing exercises in the routine are passed as props.
+                        */}
+                        <CheckboxReactHookFormMultiple filteredList={allExercises} existingExercises={existingExercises} />
+                        
                     </ScrollArea>
                     <DrawerFooter>
                         {/* <Button>Submit</Button> */}
