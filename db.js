@@ -107,6 +107,6 @@ export async function initializeExercises() {
     }
   }
 // Add a new routine
-export async function addRoutine(name, exercises) {
+export async function addRoutinetoDB(name, exercises) {
     return db.routines.add({ name, exercises });
   }
