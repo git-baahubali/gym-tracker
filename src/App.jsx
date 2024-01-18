@@ -1,5 +1,6 @@
 
 import './App.css'
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import HomePage from './pages/HomePage'; 
 import WorkoutPage from './pages/WorkoutPage';
@@ -8,12 +9,17 @@ import RoutinesPage from './pages/RoutinesPage';
 import Routine from './pages/Routine';
 import Exercisesdb from './pages/Exercisesdb';
 import Competition from './pages/Competition';
-import { signal, computed, effect } from "@preact/signals-react";
 import PoseTest from './pages/PoseTest';
+import Day from './pages/Day';
+import { initializeExercises } from '../db';
 
-const Number = signal(0)
+
 function App() {
 
+  useEffect(() => {
+    initializeExercises();
+  }, []);
+  
 
   return (
     <>
@@ -21,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<RoutinesPage />} />
         <Route path="/Routine/:routineId" element={<Routine />} />
-        <Route path="/History/:date" element={<Routine />} />
+        <Route path="/day/:date" element={<Day />} />
         <Route path="/WorkoutPage" element={<WorkoutPage />} />
         {/* <Route path="/HomePage" element={<HomePage />} /> */}
         <Route path="/Exercisesdb" element={<Exercisesdb /> } />

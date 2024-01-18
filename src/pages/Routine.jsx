@@ -13,17 +13,17 @@ function Routine() {
   // Parse the 'routineId' as a number.
   const routineIdNumber = parseInt(routineId);
 
- db.routines.get(routineIdNumber).then( response => { setName(response.name) })
+  db.routines.get(routineIdNumber).then(response => { setName(response.name) })
   // Query the IndexedDB database to get details related to the routine.
-  const routine = useLiveQuery(() => 
+  const routine = useLiveQuery(() =>
     db.routines.get(routineId), [routineIdNumber]);
-  
-   // Query the IndexedDB database to get exercises associated with the routine.
-  const exercises = useLiveQuery(() => 
+
+  // Query the IndexedDB database to get exercises associated with the routine.
+  const exercises = useLiveQuery(() =>
     routineIdNumber && routine?.exerciseId
       ? db.exercises.where('id').anyOf(routine.exerciseId).toArray()
       : [], [routineIdNumber, routine?.exerciseId]);
-
+  console.log(exercises);
   console.log("Routine :", routine);
 
   return (

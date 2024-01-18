@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { signal } from '@preact/signals-react'
 import db from '../../db';
-import  CheckboxReactHookFormMultiple  from '@/components/Xyz';
+import CheckboxReactHookFormMultiple from '@/components/Xyz';
+import { Button } from "@/components/ui/button"
 
 
 export const allExercises = signal([]);
@@ -20,7 +21,7 @@ function Exercisesdb() {
                 allExercises.value = response
             })
         } catch (error) {
-            console.log("error occured at fetchAllExercises in db.js .",error);
+            console.log("error occured at fetchAllExercises in db.js .", error);
         }
     }
 
@@ -36,7 +37,7 @@ function Exercisesdb() {
         )
         fetchAllExercises();
     }
-    async function handleDelete(id){
+    async function handleDelete(id) {
         await db.exercises.delete(id);
         fetchAllExercises()
     }
@@ -47,8 +48,13 @@ function Exercisesdb() {
     return (
         <div>
             <h1>List of exercises</h1>
-            {allExercises.value.map((exercise, index) => 
-                <p key={index}>{exercise.name} <span onClick={()=>{handleDelete(exercise.id)}}>delete</span></p> )}
+            <div className='grid grid-cols-2 gap-2'>
+                {allExercises.value.map((exercise, index) =>
+                    <p className='text-left'
+                    key={index}>{exercise.name} 
+                    <Button className='scale-50'
+                    variant='destructive' onClick={() => { handleDelete(exercise.id) }}>delete</Button></p>)}
+            </div>
 
             <form action="" onSubmit={(e) => { handleAddExercise(e) }}>
                 <input type="text" placeholder='add new exercise' />
