@@ -26,7 +26,7 @@ function App() {
 <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Routine/:routineId" element={<Routine />} />
+        {/* <Route path="/Routine/:routineId" element={<Routine />} /> */}
         <Route path="/day/:date" element={<Day />} />
         <Route path="/WorkoutPage" element={<WorkoutPage />} />
         {/* <Route path="/HomePage" element={<HomePage />} /> */}
@@ -44,3 +44,5 @@ function App() {
 }
 
 export default App
+
+

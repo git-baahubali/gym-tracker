@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useLiveQuery } from 'dexie-react-hooks';
 import db from "../../db";
+import SearchExercise from "@/components/SearchExercise";
 
 //*Story
 // In the Day component, use the passed routine ID to load the routine's exercises into the day's entry in the database. If the day entry already exists, update it; if not, create a new entry.
@@ -18,6 +19,7 @@ function Day() {
     const date = new Date(dateString);
     const { state } = useLocation();
     const { routineId, routineName } = state || {};
+    console.log(routineId);
     let routinesThere = true
 
     // get day data from db using the date .
@@ -34,19 +36,20 @@ function Day() {
             .between(startDate, endDate)
             .first(); // Fetch the day data if exists
     }, [dateString]);
+console.log(dayData);
 
+    useEffect((routineId) => {
 
-    useEffect(() => {
-
-        (async () => {
+        (async (routineId) => {
             //check if validate date from url & confirm dayData exists
             // isNaN(...) function is used to check if .getTime() returned a valid number. If date.getTime() is NaN, it means the date is not a valid date, and therefore isNaN(date.getTime()) will be true. The ! operator negates this, so !isNaN(date.getTime()) will be false for an invalid date, meaning the code inside the if block will not run for an invalid date.
-            if (!isNaN(date.getTime())) {
+            if (!isNaN(date.getTime(routineId))) {
                 // If the dayData does not exist, create a new entry for that day
                 if (!dayData) {
                     try {
                         const routine = await db.routines.get(routineId)
                         // Check if Routine Exists: Before trying to map over routine.exercises, it checks if routine is not undefined and if routine.exercises is an array.
+                        console.log(routine);
                         if (routine && Array.isArray(routine.exercises)){
                             await db.days.add({
                                 date: new Date(dateString),
@@ -81,10 +84,10 @@ function Day() {
     return (
         <div><h1>Day -{dateString}</h1>
             <div>
-                render exerciseSections from db
+               
             </div>
             {!routinesThere &&<p>No exercises in Routine to display</p>}
-            <div>add Exercise today Component</div>
+        {/* <SearchExercise /> */}
         </div>
 
     )
