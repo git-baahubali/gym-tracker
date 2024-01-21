@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useLiveQuery } from 'dexie-react-hooks';
 import db from "../../db";
-import SearchExercise from "@/components/SearchExercise";
+import { useNavigate } from "react-router-dom";
+import ExerciseSection from "@/components/ExerciseSection";
+import { startOfDay, endOfDay, addMinutes, isSameDay } from 'date-fns';
+
 
 //*Story
 // In the Day component, use the passed routine ID to load the routine's exercises into the day's entry in the database. If the day entry already exists, update it; if not, create a new entry.
@@ -15,79 +18,114 @@ function Day() {
     console.log("Day render");
     // get date from url and 
     // get routineId from state send by routine 
-    const { date: dateString } = useParams();
-    const date = new Date(dateString);
+    const { date: dateStringFromURL } = useParams();
     const { state } = useLocation();
     const { routineId, routineName } = state || {};
-    console.log(routineId);
-    let routinesThere = true
+    console.log("routine Id: ", routineId);
+
+    // Define the timezone offset for IST (UTC+5:30)
+    const timezoneOffset = 330; // 5 hours and 30 minutes in minutes
+
+
+    // Parse the date from the URL and convert it to IST
+    const parsedDateUTC = new Date(dateStringFromURL);
+    const parsedDateIST = addMinutes(parsedDateUTC, timezoneOffset);
+    const date = startOfDay(parsedDateIST);
+    const today = startOfDay(addMinutes(new Date(), timezoneOffset));
 
     // get day data from db using the date .
     // since date in db has time component also you need to specify "i want data for the entire day"
     const dayData = useLiveQuery(() => {
-        const startDate = new Date(date);
-        startDate.setHours(0, 0, 0, 0);
-
-        const endDate = new Date(date);
-        endDate.setHours(23, 59, 59, 999);
+        const startDate = startOfDay(date);
+        const endDate = endOfDay(date);
 
         return db.days
             .where('date')
             .between(startDate, endDate)
             .first(); // Fetch the day data if exists
-    }, [dateString]);
-console.log(dayData);
+    }, [dateStringFromURL]);
+    console.log("dayData: ",dayData);
+    const hasExercises = dayData && Array.isArray(dayData.exerciseSections) && dayData.exerciseSections.length > 0;
 
-    useEffect((routineId) => {
+    useEffect(() => {
 
-        (async (routineId) => {
+        (async () => {
             //check if validate date from url & confirm dayData exists
             // isNaN(...) function is used to check if .getTime() returned a valid number. If date.getTime() is NaN, it means the date is not a valid date, and therefore isNaN(date.getTime()) will be true. The ! operator negates this, so !isNaN(date.getTime()) will be false for an invalid date, meaning the code inside the if block will not run for an invalid date.
-            if (!isNaN(date.getTime(routineId))) {
+            if (!isNaN(date.getTime()) && routineId && !dayData) {
+                console.log("first if");
                 // If the dayData does not exist, create a new entry for that day
-                if (!dayData) {
+                // Only add new day data if the navigated date is today
+                console.log(date,today);
+                if (isSameDay(date, today)) {
+                    console.log('date okay if');
                     try {
                         const routine = await db.routines.get(routineId)
-                        // Check if Routine Exists: Before trying to map over routine.exercises, it checks if routine is not undefined and if routine.exercises is an array.
                         console.log(routine);
-                        if (routine && Array.isArray(routine.exercises)){
+                        // Check if Routine Exists: Before trying to map over routine.exercises, it checks if routine is not undefined and if routine.exercises is an array.
+                        if (routine && Array.isArray(routine.exercises)) {
+                            console.log('3rd if');
+                            const exercises = await db.exercises.where('id').anyOf(routine.exercises).toArray();
+                            const exerciseSections = exercises.map(exercise => ({
+                                exerciseId: exercise.id,
+                                exerciseName: exercise.name, // Include name
+                                sets: []
+                            }));
                             await db.days.add({
-                                date: new Date(dateString),
+                                date: new Date(dateStringFromURL),
                                 workoutRoutineId: routineId,
-                                exerciseSections: routine.exercises.map(exerciseId => ({
-                                    exerciseId,
-                                    sets: [] // Initialize with no sets
-                                })),
+                                exerciseSections,
                             });
-                        } else {
+                        } else if (routine.exercises.length == 0) {
                             // Routine does not exist or does not have exercises
                             // Handle this scenario appropriately (e.g., show a message or create an empty day entry)
-                            routinesThere = false //routinesThere is used to render message
+
+                        }
+                        else {
+                            console.log("Not able to add day Data");
                         }
                     } catch (error) {
                         console.error('Error adding day:', error);
                     }
                 }
+            } else {
+                if (isNaN(date.getTime())) {
+                    console.error('Invalid date string:', dateStringFromURL);
+                }
+                if (!routineId) {
+                    console.error('Routine ID is not provided or invalid');
+                }
+            }
 
-            } else
-                console.error('Invalid date string:', dateString);
         })()
-    }, [dayData, date, dateString]);
+    }, [dayData, date, routineId, dateStringFromURL]);
 
 
     const navigateToDay = (date) => {
-        const dateString = date.toISOString().split('T')[0]; // Extract date part only
-        navigate(`/day/${dateString}`);
+        const dateStringFromURL = date.toISOString().split('T')[0]; // Extract date part only
+        navigate(`/day/${dateStringFromURL}`);
     };
 
 
     return (
-        <div><h1>Day -{dateString}</h1>
+        <div><h1>Day -{dateStringFromURL}</h1>
             <div>
-               
+                {/* {dayData.exerciseSections.map((x,index) => <ExerciseSection key={index} name={'name'} />)} */}
             </div>
-            {!routinesThere &&<p>No exercises in Routine to display</p>}
-        {/* <SearchExercise /> */}
+            {
+                hasExercises ? (
+                    // Render exercise sections if they exist
+                    <div className=" ga">
+                        {dayData.exerciseSections.map((exerciseSection, index) => (
+                            <ExerciseSection key={index} {...exerciseSection} name={exerciseSection.exerciseName}/>
+                        ))}
+                    </div>
+                ) : (
+                    // Render a message if no exercises are done on the day
+                    <div>No exercises done today.</div>
+                )
+            }
+            {/* <SearchExercise /> */}
         </div>
 
     )

@@ -19,14 +19,13 @@ function ExerciseSection({name}) {
         // get data for specific day and exercise 
     },[])
     return (
-        <div className='w-[90vw] border-0 bg-sky-900 rounded-xl m-0 '>
+        <div className='w-[90vw] border-0 bg-sky-900 rounded-xl m-2 '>
             <div className="flex justify-between items-center p-2">
-            <h1 className="px-4 py-1 text-center">{name || "Bicep Curl" } <span> option</span></h1>
+            <h1 className="px-4 py-1 text-center text-gray-200">{name || "Bicep Curl" } <span> </span></h1>
                 <OpenInFullIcon />
             </div>
             {sets.value.map((set, index) => 
             <Set editMode={false} key={index} setType={set.setTypeValue} weight={set.weightValue} units={set.weightUnits} reps={set.repsValue} RepType={set.repType} />)}
-            <Set editMode />
             <Set editMode />
 
             {/* <Rest duration={30}/> */}

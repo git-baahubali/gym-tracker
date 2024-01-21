@@ -4,7 +4,7 @@ import { addRoutinetoDB } from "../../db";
 import db from "../../db";
 import History from "../components/History";
 import { useLiveQuery } from "dexie-react-hooks";
-
+import { formatISO,startOfDay, addMinutes } from "date-fns";
 import RoutineComponent from "@/components/RoutineComponent";
 
 
@@ -21,7 +21,17 @@ function Home() {
 
     const navigate = useNavigate()
     function handleRoutineClick(routineId, routineName) {
-        navigate(`/day/${new Date().toISOString().split('T')[0]}`, { state: { routineId, routineName } });
+        // navigating to today 
+        const timezoneOffset = 330; // 5 hours and 30 minutes in minutes
+        
+        // Get today's date at the start of the day in IST
+        const todayIST = startOfDay(addMinutes(new Date(), timezoneOffset));
+
+        // Format the date as an ISO string (YYYY-MM-DD) for the URL
+        const dateStringFromURL = formatISO(todayIST, { representation: 'date' });
+
+        // navigating to today
+        navigate(`/day/${dateStringFromURL}`, { state: { routineId, routineName } });
     }
 
     async function handleSubmit(e) {
@@ -46,7 +56,7 @@ function Home() {
                     handleRoutineClick={() => handleRoutineClick(routine.id, routine.name)}
                         handleDelete={()=>handleDelete(routine.id)}>
 
-                        <span className="relative w-[40vw] h-16 flex items-center justify-center p-2 my-2 m-auto  border-gray-600 border-[1px]"> {routine.name}</span>
+                        <button className="relative w-[40vw] h-16 flex items-center justify-center p-2 my-2 m-auto  border-gray-600 border-[1px]"> {routine.name}</button>
 
                     </RoutineComponent>
                 )}

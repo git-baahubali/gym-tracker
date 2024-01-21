@@ -8,7 +8,7 @@ function handleClose() {
     KeyboardVisibility.value = false
 }
 
-function Keyboard({name}) {
+function Keyboard({ name }) {
 
     function onKey(key) {
         const keyInfo = mapOfKeys.get(key);
@@ -41,17 +41,18 @@ function Keyboard({name}) {
     ['Sec', { key: 'Sec', stringToAdd: 'Sec,' }]])
     return (
         <div className={`fixed bottom-0 left-0 z-10 bg-gray-900 grid grid-cols-4 w-full h-[300px] gap-2 text-white ${KeyboardVisibility ? '' : 'hidden'}`}>
-            <input type="text" readOnly value={setData.value} onChange={handleExpressionChange} className="col-span-3 border-2 border-sky-900 p-2 expression text-black"  /> 
+            <input type="text" readOnly value={setData.value} onChange={handleExpressionChange} className="col-span-3 border-2 border-sky-900 p-2 expression text-black" />
             {/* read only prevents device keyboard from popping up  */}
             <button className="button" ><KeyboardIcon /></button>
             {/* <p className="col-span-4 border-2 border-sky-900 p-2 expression">{setData.value}</p> */}
-            <button className='button border-[1px] border-gray-600 active:bg-black' 
-            onClick={handleClose}> Close</button>
-            <p className="col-span-1"></p>
-            <button className="border-[1px] border-red-900 active:bg-black" 
-            onClick={() => { setData.value = '' }}>Clear</button>
+            <button className='button border-[1px] border-gray-600 active:bg-black'
+                onClick={handleClose}> Close</button>
+            <button className='button border-[1px] border-gray-600 active:bg-black'
+                onClick={() => setData.value += '.'}> .</button>
+            <button className="border-[1px] border-red-900 active:bg-black"
+                onClick={() => { setData.value = '' }}>Clear</button>
             <button className='button border-[1px] border-sky-600 active:bg-black'
-            onClick={''} > Autofill </button>
+                onClick={''} > Autofill </button>
 
             {keys.map(key => (
                 <button key={key} onClick={() => onKey(key)}

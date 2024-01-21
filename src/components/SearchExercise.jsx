@@ -68,6 +68,7 @@ export function SearchExercise(props) {
           <CommandItem key={index} >
 
             <input 
+            className="scale-150 mx-4"
             checked= {routine.exercises.includes(x.id)}
             onChange={(e) => handleCheckBox(x.id, e.target.checked)}
             type="checkbox" name={x.name} id={x.id} /><span onClick={() => addExerciseToday(x)}>{x.name}</span>
