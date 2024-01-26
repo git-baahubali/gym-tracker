@@ -38,12 +38,12 @@ function Day() {
     const dayData = useLiveQuery(() => {
         const startDate = startOfDay(date);
         const endDate = endOfDay(date);
-
         return db.days
             .where('date')
             .between(startDate, endDate)
             .first(); // Fetch the day data if exists
     }, [dateStringFromURL]);
+
     console.log("dayData: ",dayData);
     const hasExercises = dayData && Array.isArray(dayData.exerciseSections) && dayData.exerciseSections.length > 0;
 

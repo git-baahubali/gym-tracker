@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { sets } from "./ExerciseSection";
 import db from "../../db";
 
@@ -23,6 +23,9 @@ export default function Set({ exerciseName, setType, weight, units, reps, RepTyp
   // function handleKeyboard() {
   //     KeyboardVisibility.value = true;
   // }
+  const weightRef = useRef(null);
+  const weightUnitsRef = useRef(null);
+  const repsRef = useRef(null);
 
   async function handleAdd() {
     const temp = {
@@ -66,28 +69,31 @@ export default function Set({ exerciseName, setType, weight, units, reps, RepTyp
         </select>
 
         <input
-          type="text"
+          type="number"
           className='w-1/3'
           name='weight'
           value={weightValue}
           onChange={e => setWeightValue(e.target.value)}
+          ref={weightRef}
         />
         <select
           className="p-1 w-1/6"
           name='weightUnits'
           value={weightUnits}
           onChange={e => setWeightUnits(e.target.value)}
+          ref={weightUnitsRef}
         >
           <option value="Kg" >Kg</option>
           <option value="lbs" >lbs</option>
         </select>
         x
         <input
-          type="text"
+          type="number"
           className='w-1/3'
           name='reps'
           value={repsValue}
           onChange={e => setRepsValue(e.target.value)}
+          ref={repsRef}
         />
         <select
           className="p-1 w-1/3"
