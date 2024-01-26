@@ -12,6 +12,7 @@ import Competition from './pages/Competition';
 import PoseTest from './pages/PoseTest';
 import Day from './pages/Day';
 import { initializeExercises } from '../db';
+import InputTest from './pages/InputTest';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         {/* <Route path="/Routine/:routineId" element={<Routine />} /> */}
         <Route path="/day/:date" element={<Day />} />
         <Route path="/WorkoutPage" element={<WorkoutPage />} />
+        <Route path="/InputTest" element={<InputTest />} />
         {/* <Route path="/HomePage" element={<HomePage />} /> */}
         <Route path="/Exercisesdb" element={<Exercisesdb /> } />
         <Route path="/Keyboard" element={<Keyboard />} />
