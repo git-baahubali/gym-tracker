@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import HomePage from './pages/HomePage'; 
 import WorkoutPage from './pages/WorkoutPage';
 import Keyboard from './components/Keyboard';
-import RoutinesPage from './pages/RoutinesPage';
+import Home from './pages/Home';
 import Routine from './pages/Routine';
 import Exercisesdb from './pages/Exercisesdb';
 import Competition from './pages/Competition';
@@ -25,8 +25,8 @@ function App() {
     <>
 <BrowserRouter>
       <Routes>
-        <Route path="/" element={<RoutinesPage />} />
-        <Route path="/Routine/:routineId" element={<Routine />} />
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/Routine/:routineId" element={<Routine />} /> */}
         <Route path="/day/:date" element={<Day />} />
         <Route path="/WorkoutPage" element={<WorkoutPage />} />
         {/* <Route path="/HomePage" element={<HomePage />} /> */}
@@ -44,3 +44,5 @@ function App() {
 }
 
 export default App
+
+
